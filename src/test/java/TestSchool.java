@@ -1,18 +1,20 @@
 import org.junit.Test;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class TestSchool {
-    private final static String VALID_NAME = "MySchool";
+    private final static String VALID_COURSE_NAME = "UniqueName";
+    private final static String VALID_SCHOOL_NAME = "MySchool";
     private final static Date VALID_DATE = Calendar.getInstance().getTime();
     private final static ArrayList<Course> EMPTY_COURSE_COLLECTION = new ArrayList<>();
+    private final static ArrayList<Course> ONE_ELEMENT_COURSE_COLLECTION = new ArrayList<Course>(Arrays.asList(new Course()));
 
 
 
@@ -21,48 +23,48 @@ public class TestSchool {
     @Test
     public void listCopyOfAllCoursesIsReturned() {
         //arrange
-        School school = new School();
+        School school = new School(VALID_SCHOOL_NAME, VALID_DATE);
         ArrayList<Course> courses;
-        ArrayList<Course> expectedCourses = new ArrayList<>();
+        school.setAllCourses(ONE_ELEMENT_COURSE_COLLECTION);
 
         //act
         courses = school.getAllCourses();
 
         //assert
-        assertEquals("Class School is returning different list of courses than the one in it." ,expectedCourses , courses);
+        assertEquals("Class School is returning different list of courses than the one in it." ,ONE_ELEMENT_COURSE_COLLECTION , courses);
     }
 
     //A School has a name
     @Test
     public void schoolSchoolObjectHasNameProperty()  {
         //arrange
-        School school = new School(VALID_NAME, VALID_DATE);
+        School school = new School(VALID_SCHOOL_NAME, VALID_DATE);
 
         //act
         String returnedName = school.getName();
 
         //assert
-        assertEquals("Expected name is" + VALID_NAME + "But what was received is: " + returnedName, VALID_NAME, returnedName);
+        assertEquals("Expected name is " + VALID_SCHOOL_NAME + "But what was received is: " + returnedName, VALID_SCHOOL_NAME, returnedName);
     }
 
     //A School has an opening date
     @Test
-    public void schoolSchoolObjectHasNameProperty() {
+    public void schoolSchoolObjectHasDateProperty() {
         //arrange
-        School school = new School(VALID_NAME, VALID_DATE);
+        School school = new School(VALID_SCHOOL_NAME, VALID_DATE);
 
         //act
         Date date = school.getCreateDate();
 
         //assert
-        assertEquals("Expected date is" + date.toString() + "But what was received is: " + VALID_DATE.toString(), VALID_DATE, date);
+        assertEquals("Expected date is " + date.toString() + "But what was received is: " + VALID_DATE.toString(), VALID_DATE, date);
     }
 
     //A School has a collection of courses.
     @Test
     public void schoolSchoolObjectHasCourseListProperty() {
         //arrange
-        School school = new School(VALID_NAME, VALID_DATE);
+        School school = new School(VALID_SCHOOL_NAME, VALID_DATE);
 
         //act
         ArrayList<Course> returnedCollection = school.getAllCourses();
@@ -70,11 +72,26 @@ public class TestSchool {
         //assert
         assertEquals("Expect empty collection [] But what was received is collection with : " + returnedCollection.size() + "elements", EMPTY_COURSE_COLLECTION, returnedCollection);
     }
+
+    //The name of the course is unique.
+    @Test
+    public void courseNameIsUnique(){
+        //arrange
+        School school = new School(VALID_SCHOOL_NAME, VALID_DATE);
+
+
+        //act
+        school.addCourse(VALID_COURSE_NAME);
+        boolean resultFromNameCheck = school.isCourseNameUnique(VALID_COURSE_NAME);
+        //assert
+        assertTrue("Expected TRUE but received " + String.valueOf(resultFromNameCheck).toUpperCase(), resultFromNameCheck ) ;
+    }
+
+    
 }
 
 /*
 
-A School has a name, an opening date and a collection of courses.
 
 Course objects function as placeholders for the name of the course, the start date and end date of the course.
 
