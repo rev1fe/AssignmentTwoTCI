@@ -100,7 +100,7 @@ public class TestSchool {
     public void getCourseByName() throws CourseException {
         //arrange
         School school = new School(VALID_SCHOOL_NAME, VALID_DATE);
-        Course expectedCourse = new Course(VALID_COURSE_NAME, VALID_DATE);
+        Course expectedCourse = new Course(VALID_COURSE_NAME, VALID_DATE, VALID_DATE);
         school.addCourse(expectedCourse);
 
         //act
@@ -112,7 +112,7 @@ public class TestSchool {
 
     //Course begin dates are after the school begin date. Throw a CourseException when it’s wrong.
     @Test(expected = CourseException.class)
-    public void courseDateIsAfterSchoolDate() throws CourseException {
+    public void courseBeginDateIsAfterSchoolDate() throws CourseException {
         //arrange
         School school = new School(VALID_SCHOOL_NAME, VALID_DATE);
         Calendar cal = Calendar.getInstance();
@@ -126,6 +126,45 @@ public class TestSchool {
 
         //assert
     }
+
+
+    @Test
+    public void courseCanBeAddedToSchool() throws CourseException{
+        //arrange
+        School school = new School(VALID_SCHOOL_NAME, VALID_DATE);
+        ArrayList<Course> courses = school.getAllCourses();
+        int initialSize = courses.size() + 1;
+        Course course = new Course(VALID_COURSE_NAME, VALID_DATE, VALID_DATE);
+        school.addCourse(course);
+        courses = school.getAllCourses();
+        int newSize = courses.size();
+
+        //act
+        Course returnedCourse = school.getCourseByName(course.getName());
+
+        //assert
+        assertEquals("Expected number of elements is" + initialSize + "Reality is " + newSize, initialSize, newSize);
+        assertEquals("Expected is course " + course + "reality is" + returnedCourse ,course, returnedCourse);
+    }
+
+    //Course begin dates are after the school begin date. Throw a CourseException when it’s wrong.
+    @Test(expected = CourseException.class)
+    public void courseEndDateIsAfterSchoolDate() throws CourseException {
+        //arrange
+        School school = new School(VALID_SCHOOL_NAME, VALID_DATE);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(VALID_DATE);
+        cal.add(Calendar.DATE, -30);
+        Date INVALID_DATE = cal.getTime();
+        System.out.println(INVALID_DATE);
+
+        //act
+        school.addCourse(new Course(VALID_COURSE_NAME, VALID_DATE, INVALID_DATE));
+
+        //assert
+    }
+
+
 }
 
 /*
@@ -135,14 +174,9 @@ Course objects function as placeholders for the name of the course, the start da
 
 You can add a course to the school.
 
-The end date should be after the begin date, otherwise a CourseException is thrown.
-
-
-
 
 You can get a list of all course names.
 
 
-Course begin dates are after the school begin date. Throw a CourseException when it’s wrong.
 
  */

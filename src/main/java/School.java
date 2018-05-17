@@ -45,7 +45,7 @@ public class School {
     }
 
     public void addCourse(Course expectedCourse) throws CourseException {
-        if(createDate.compareTo(expectedCourse.getCreateDate())== 1)
+        if(createDate.compareTo(expectedCourse.getCreateDate())== 1 || createDate.compareTo(expectedCourse.getEndDate())== 1)
         {
             throw new CourseException("Date cannot be before the create date of the school");
         }else{
