@@ -27,7 +27,7 @@ public class School {
     }
 
     public void addCourse(String validCourseName) {
-        courses.add(new Course());
+        courses.add(new Course(validCourseName));
     }
 
     public void setAllCourses(ArrayList<Course> allCourses) {

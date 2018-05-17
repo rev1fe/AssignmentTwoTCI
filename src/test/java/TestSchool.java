@@ -5,16 +5,15 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class TestSchool {
     private final static String VALID_COURSE_NAME = "UniqueName";
+    private final static String VALID_COURSE_NAME_TWO = "SecondName";
     private final static String VALID_SCHOOL_NAME = "MySchool";
     private final static Date VALID_DATE = Calendar.getInstance().getTime();
     private final static ArrayList<Course> EMPTY_COURSE_COLLECTION = new ArrayList<>();
-    private final static ArrayList<Course> ONE_ELEMENT_COURSE_COLLECTION = new ArrayList<Course>(Arrays.asList(new Course()));
+    private final static ArrayList<Course> ONE_ELEMENT_COURSE_COLLECTION = new ArrayList<Course>(Arrays.asList(new Course("Test Course")));
 
 
 
@@ -84,10 +83,21 @@ public class TestSchool {
         school.addCourse(VALID_COURSE_NAME);
         boolean resultFromNameCheck = school.isCourseNameUnique(VALID_COURSE_NAME);
         //assert
-        assertTrue("Expected TRUE but received " + String.valueOf(resultFromNameCheck).toUpperCase(), resultFromNameCheck ) ;
+        assertFalse("Expected FALSE but received " + String.valueOf(resultFromNameCheck).toUpperCase(), resultFromNameCheck ); ;
     }
 
-    
+    @Test
+    public void courseNameIsNotUnique(){
+        //arrange
+        School school = new School(VALID_SCHOOL_NAME, VALID_DATE);
+
+        //act
+        school.addCourse(VALID_COURSE_NAME_TWO);
+        boolean resultFromNameCheck = school.isCourseNameUnique(VALID_COURSE_NAME);
+
+        //assert
+        assertTrue("Expected TRUE but received " + String.valueOf(resultFromNameCheck).toUpperCase(), resultFromNameCheck ) ;
+    }
 }
 
 /*
@@ -99,7 +109,6 @@ You can add a course to the school.
 
 The end date should be after the begin date, otherwise a CourseException is thrown.
 
-The name of the course is unique.
 
 You can get a course by name.
 
