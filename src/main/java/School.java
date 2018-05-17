@@ -26,8 +26,9 @@ public class School {
         return createDate;
     }
 
-    public void addCourse(String validCourseName) {
-        courses.add(new Course(validCourseName));
+    public void addCourse(String validCourseName, Date date)  {
+            courses.add(new Course(validCourseName, date));
+
     }
 
     public void setAllCourses(ArrayList<Course> allCourses) {
@@ -41,5 +42,24 @@ public class School {
         }
 
         return true;
+    }
+
+    public void addCourse(Course expectedCourse) throws CourseException {
+        if(createDate.compareTo(expectedCourse.getCreateDate())== 1)
+        {
+            throw new CourseException("Date cannot be before the create date of the school");
+        }else{
+            courses.add(expectedCourse);
+        }
+
+    }
+
+    public Course getCourseByName(String validCourseName) {
+
+        for (Course c: courses) {
+            if(c.getName().equals(validCourseName))
+                return c;
+        }
+        return null;
     }
 }
